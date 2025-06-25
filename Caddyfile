@@ -1,0 +1,4 @@
+evolution.autowpp.com {
+    redir / /manager
+    reverse_proxy api:8080
+}
