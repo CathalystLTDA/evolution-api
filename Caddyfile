@@ -1,4 +1,16 @@
 evolution.autowpp.com {
-    redir / /manager
-    reverse_proxy api:8080
+    # 1. Handle requests for the Manager UI page
+    # This block specifically targets any URL starting with /manager
+    handle_path /manager* {
+        # Serve files from the directory we mounted in docker-compose.yaml
+        root * /usr/share/caddy/manager
+        # Caddy will serve index.html from that directory
+        file_server
+    }
+
+    # 2. Handle all other requests by sending them to the API
+    # This block acts as a fallback for everything else
+    handle {
+        reverse_proxy api:8080
+    }
 }
